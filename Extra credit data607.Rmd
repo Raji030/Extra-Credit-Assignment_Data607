@@ -1,0 +1,73 @@
+---
+title: "Extra Credit Assignment02_Data607"
+author: "Mahmud Hasan Al Raji"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readxl)
+library(dplyr)
+```
+
+```{r }
+movie_rating<-read_excel("F:\\CUNY masters\\extra credit assignment 607\\607 2nd extra credit\\movie_rating.xlsx",sheet=1,range="A1:G6",
+              col_name=TRUE,col_types=NULL)
+movie_rating 
+```
+```{r }
+movie_rating1<-movie_rating[c("Barbarian","Funnypage","Holdmetight","Nope","Prey","Theterritory")]
+movie_rating1
+movie_rating1<-movie_rating1 %>% mutate(user_avg=rowMeans(movie_rating1,na.rm=TRUE,dims=1))
+movie_rating1
+```
+```{r}
+movie_avg<-colMeans(movie_rating[sapply(movie_rating, is.numeric)],na.rm=TRUE)
+movie_avg
+mean_movie<-mean(movie_avg)
+mean_movie
+movie_avg_minus_mean_movie<-movie_avg-mean_movie
+movie_avg_minus_mean_movie
+user_avg_minus_mean_movie<-movie_rating1$user_avg-mean_movie
+user_avg_minus_mean_movie
+```
+```{r}
+movie<-c("Barbarian","Funnypage","Holdmetight","Nope","Prey","Theterritory")
+user_avg<-movie_rating1$user_avg
+movie_avg
+
+df_new <- cbind(movie_rating,user_avg,user_avg_minus_mean_movie)
+df_new
+```
+```{r}
+df1<-data.frame(movie_avg,movie_avg_minus_mean_movie)
+df1
+```
+## Finding rate by Global Baseline Estimate
+**Question1: How would Monir rate Theterritory?
+** Question2: How would Karim rate Prey?
+**Question3: How would Joseph rate Prey and Theterritory?
+** Question4: How would Prakash rate Prey?
+
+**General Formula: Global Baseline Estimate = Mean Movie Rating + movie rating relative to average + Critic's rating relative to average.
+
+```{r}
+Monir_rating_for_Theterritory<-2.905556 -1.5722222+0.09444444
+Monir_rating_for_Theterritory
+Karim_rating_for_Prey<-2.905556 -0.4055556+0.09444444
+Karim_rating_for_Prey
+Joseph_rating_for_Prey<-2.905556 -0.4055556+0.59444444
+Joseph_rating_for_Prey
+Joseph_rating_for_Theterritory<-2.905556-1.5722222+0.59444444
+Joseph_rating_for_Theterritory
+Prakash_rating_for_Prey<-2.905556-0.4055556+0.09444444
+Prakash_rating_for_Prey
+```
+#Above 4 questions answers are presented below in tabular form
+```{r}
+unseen_movie_rating<-data.frame(Monir_rating_for_Theterritory,Karim_rating_for_Prey,Joseph_rating_for_Prey,Joseph_rating_for_Theterritory,Prakash_rating_for_Prey)
+unseen_movie_rating
+```
+**Recommending Prey for Karim
+
+
